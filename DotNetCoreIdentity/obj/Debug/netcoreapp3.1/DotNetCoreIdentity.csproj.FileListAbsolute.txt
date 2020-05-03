@@ -208,4 +208,3 @@ D:\Projects\Github\Core\dotnetcore-identity-mongodb\DotNetCoreIdentity\bin\Debug
 D:\Projects\Github\Core\dotnetcore-identity-mongodb\DotNetCoreIdentity\bin\Debug\netcoreapp3.1\SharpCompress.dll
 D:\Projects\Github\Core\dotnetcore-identity-mongodb\DotNetCoreIdentity\bin\Debug\netcoreapp3.1\System.Security.Cryptography.Pkcs.dll
 D:\Projects\Github\Core\dotnetcore-identity-mongodb\DotNetCoreIdentity\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Security.Cryptography.Pkcs.dll
-D:\Projects\Github\Core\dotnetcore-identity-mongodb\DotNetCoreIdentity\obj\Debug\netcoreapp3.1\DotNetCoreIdentity.MvcApplicationPartsAssemblyInfo.cache
