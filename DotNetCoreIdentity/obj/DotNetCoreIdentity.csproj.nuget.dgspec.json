@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Projects\\Repos\\DotNetCoreIdentity\\DotNetCoreIdentity\\DotNetCoreIdentity.csproj": {}
+    "D:\\Projects\\Github\\Core\\dotnetcore-identity-mongodb\\DotNetCoreIdentity\\DotNetCoreIdentity.csproj": {}
   },
   "projects": {
-    "D:\\Projects\\Repos\\DotNetCoreIdentity\\DotNetCoreIdentity\\DotNetCoreIdentity.csproj": {
+    "D:\\Projects\\Github\\Core\\dotnetcore-identity-mongodb\\DotNetCoreIdentity\\DotNetCoreIdentity.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\Repos\\DotNetCoreIdentity\\DotNetCoreIdentity\\DotNetCoreIdentity.csproj",
+        "projectUniqueName": "D:\\Projects\\Github\\Core\\dotnetcore-identity-mongodb\\DotNetCoreIdentity\\DotNetCoreIdentity.csproj",
         "projectName": "DotNetCoreIdentity",
-        "projectPath": "D:\\Projects\\Repos\\DotNetCoreIdentity\\DotNetCoreIdentity\\DotNetCoreIdentity.csproj",
+        "projectPath": "D:\\Projects\\Github\\Core\\dotnetcore-identity-mongodb\\DotNetCoreIdentity\\DotNetCoreIdentity.csproj",
         "packagesPath": "C:\\Users\\Sinan TOK\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\Repos\\DotNetCoreIdentity\\DotNetCoreIdentity\\obj\\",
+        "outputPath": "D:\\Projects\\Github\\Core\\dotnetcore-identity-mongodb\\DotNetCoreIdentity\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Sinan TOK\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -38,9 +38,17 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "AspNetCore.Identity.MongoDbCore": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[3.1.2, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[6.5.1, )"
             }
           },
           "imports": [
