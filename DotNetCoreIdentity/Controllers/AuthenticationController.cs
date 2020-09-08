@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DotNetCoreIdentity.Models.Identity;
+﻿using DotNetCoreIdentity.Models.Identity;
 using DotNetCoreIdentity.Models.RequestModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DotNetCoreIdentity.Controllers
 {
@@ -26,7 +23,7 @@ namespace DotNetCoreIdentity.Controllers
             _configuration = configuration;
         }
 
-        public async Task<IActionResult> Register([FromBody]UserRegister model)
+        public async Task<IActionResult> Register([FromBody] UserRegister model)
         {
             if (ModelState.IsValid)
             {
@@ -36,12 +33,12 @@ namespace DotNetCoreIdentity.Controllers
                     return BadRequest(new { message = "UserName Already Registered." });
                 }
 
-                var applicationUser = new ApplicationUser 
-                { 
-                    UserName = model.UserName, 
-                    Name = model.Name, 
-                    LastName = model.LastName, 
-                    Email = model.Email 
+                var applicationUser = new ApplicationUser
+                {
+                    UserName = model.UserName,
+                    Name = model.Name,
+                    LastName = model.LastName,
+                    Email = model.Email
                 };
 
                 var result = await _userManager.CreateAsync(applicationUser, model.Password);
@@ -57,6 +54,5 @@ namespace DotNetCoreIdentity.Controllers
             string errorMessage = string.Join(", ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
             return BadRequest(errorMessage ?? "Bad Request");
         }
-
     }
 }
