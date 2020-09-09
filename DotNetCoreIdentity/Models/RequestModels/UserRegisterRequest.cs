@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DotNetCoreIdentity.Models.RequestModels
 {
-    public class UserRegister
+    public class UserRegisterRequest
     {
         [Required]
         [Display(Name = "UserName")]

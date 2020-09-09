@@ -17,6 +17,7 @@ using AspNetCore.Identity.MongoDbCore.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
+using DotNetCoreIdentity.Models;
 
 namespace DotNetCoreIdentity
 {
@@ -32,6 +33,7 @@ namespace DotNetCoreIdentity
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
 
             // Configure Identity MongoDB
             var mongoDbIdentityConfiguration = new MongoDbIdentityConfiguration

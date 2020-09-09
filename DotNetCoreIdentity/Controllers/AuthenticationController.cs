@@ -1,10 +1,14 @@
-﻿using DotNetCoreIdentity.Models.Identity;
+﻿using DotNetCoreIdentity.Models;
+using DotNetCoreIdentity.Models.Identity;
 using DotNetCoreIdentity.Models.RequestModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace DotNetCoreIdentity.Controllers
@@ -16,15 +20,20 @@ namespace DotNetCoreIdentity.Controllers
         private UserManager<ApplicationUser> _userManager;
         private SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
+        private readonly ApplicationSettings _applicationSettings;
 
-        public AuthenticationController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration)
+        public AuthenticationController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration, IOptions<ApplicationSettings> appSettings)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+            _applicationSettings = appSettings.Value;
         }
 
-        public async Task<IActionResult> Register([FromBody] UserRegister model)
+        // POST api/Authentication/register
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register([FromBody] UserRegisterRequest model)
         {
             if (ModelState.IsValid)
             {
@@ -58,6 +67,28 @@ namespace DotNetCoreIdentity.Controllers
                 }
             }
 
+            string errorMessage = string.Join(", ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+            return await Task.FromResult<IActionResult>(BadRequest(errorMessage ?? "Bad Request"));
+        }
+
+        // POST api/Authentication/login
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromBody] LoginRequest model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
+                if (result.Succeeded)
+                {
+                    var appUser = _userManager.Users.SingleOrDefault(r => r.UserName == model.UserName);
+                    //var token = AuthenticationHelper.GenerateJwtToken(appUser, _configuration);
+
+                    //var rootData = new LoginResponse(token, appUser.UserName, appUser.Email);
+                    return await Task.FromResult<IActionResult>(Ok(new { message = "Success" }));
+                }
+                return await Task.FromResult<IActionResult>(StatusCode((int)HttpStatusCode.Unauthorized, "Bad Credentials"));
+            }
             string errorMessage = string.Join(", ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
             return await Task.FromResult<IActionResult>(BadRequest(errorMessage ?? "Bad Request"));
         }
