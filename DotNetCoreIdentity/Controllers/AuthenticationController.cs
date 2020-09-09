@@ -3,6 +3,7 @@ using DotNetCoreIdentity.Models.RequestModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,32 +28,38 @@ namespace DotNetCoreIdentity.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByNameAsync(model.UserName);
-                if (user != null)
+                try
                 {
-                    return BadRequest(new { message = "UserName Already Registered." });
+                    var user = await _userManager.FindByNameAsync(model.UserName);
+                    if (user != null)
+                    {
+                        return await Task.FromResult<IActionResult>(Ok(new { message = "UserName Already Registered." }));
+                    }
+
+                    var applicationUser = new ApplicationUser
+                    {
+                        UserName = model.UserName,
+                        Name = model.Name,
+                        LastName = model.LastName,
+                        Email = model.Email
+                    };
+
+                    var result = await _userManager.CreateAsync(applicationUser, model.Password);
+                    if (result.Succeeded)
+                    {
+                        await _userManager.AddToRoleAsync(applicationUser, model.Role);
+                        return await Task.FromResult<IActionResult>(Created("api/authentication/register", result));
+                    }
+                    return await Task.FromResult<IActionResult>(Ok(string.Join(",", result.Errors?.Select(error => error.Description))));
                 }
-
-                var applicationUser = new ApplicationUser
+                catch (Exception)
                 {
-                    UserName = model.UserName,
-                    Name = model.Name,
-                    LastName = model.LastName,
-                    Email = model.Email
-                };
-
-                var result = await _userManager.CreateAsync(applicationUser, model.Password);
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(applicationUser, model.Role);
-                    return Created("api/authentication/register", result);
+                    return await Task.FromResult<IActionResult>(Ok(new { message = "Something went wrong." }));
                 }
-
-                return Ok(string.Join(",", result.Errors?.Select(error => error.Description)));
             }
 
             string errorMessage = string.Join(", ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-            return BadRequest(errorMessage ?? "Bad Request");
+            return await Task.FromResult<IActionResult>(BadRequest(errorMessage ?? "Bad Request"));
         }
     }
 }
