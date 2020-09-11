@@ -73,8 +73,8 @@ namespace DotNetCoreIdentity
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
                     ValidIssuer = Configuration["ApplicationSettings:JwtIssuer"],
                     ValidAudience = Configuration["ApplicationSettings:JwtAudience"],
                     ValidateLifetime = true, 
