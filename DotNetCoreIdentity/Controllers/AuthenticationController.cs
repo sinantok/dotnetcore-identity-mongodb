@@ -1,6 +1,8 @@
-﻿using DotNetCoreIdentity.Models;
+﻿using DotNetCoreIdentity.Helpers;
+using DotNetCoreIdentity.Models;
 using DotNetCoreIdentity.Models.Identity;
 using DotNetCoreIdentity.Models.RequestModels;
+using DotNetCoreIdentity.Models.ResponseModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -81,11 +83,10 @@ namespace DotNetCoreIdentity.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
                 if (result.Succeeded)
                 {
-                    var appUser = _userManager.Users.SingleOrDefault(r => r.UserName == model.UserName);
-                    //var token = AuthenticationHelper.GenerateJwtToken(appUser, _configuration);
+                    ApplicationUser appUser = _userManager.Users.SingleOrDefault(r => r.UserName == model.UserName);
+                    TokenResponse tokenResponse = AuthenticationHelper.GenerateJwtToken(appUser, _configuration);
 
-                    //var rootData = new LoginResponse(token, appUser.UserName, appUser.Email);
-                    return await Task.FromResult<IActionResult>(Ok(new { message = "Success" }));
+                    return await Task.FromResult<IActionResult>(Ok(tokenResponse));
                 }
                 return await Task.FromResult<IActionResult>(StatusCode((int)HttpStatusCode.Unauthorized, "Bad Credentials"));
             }

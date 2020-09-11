@@ -75,6 +75,9 @@ namespace DotNetCoreIdentity
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false,
+                    ValidIssuer = Configuration["ApplicationSettings:JwtIssuer"],
+                    ValidAudience = Configuration["ApplicationSettings:JwtAudience"],
+                    ValidateLifetime = true, 
                     ClockSkew = TimeSpan.Zero
                 };
             });
